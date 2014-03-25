@@ -308,9 +308,11 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
               opened: modalOpenedDeferred.promise,
               close: function (result) {
                 $modalStack.close(modalInstance, result);
+                $rootScope.$broadcast('modalClose');
               },
               dismiss: function (reason) {
                 $modalStack.dismiss(modalInstance, reason);
+                $rootScope.$broadcast('modalDismiss');
               }
             };
 
@@ -355,6 +357,8 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
                 keyboard: modalOptions.keyboard,
                 windowClass: modalOptions.windowClass
               });
+              
+              $rootScope.$broadcast('modalOpen');
 
             }, function resolveError(reason) {
               modalResultDeferred.reject(reason);

@@ -205,6 +205,20 @@ describe('$modal', function () {
       );
       expect(modal.opened).toBeRejectedWith(false);
     });
+    
+    it('should broadcast events on open, close, and dismiss', function() {
+      spyOn($rootScope, '$broadcast').andCallThrough();
+      
+      var modal = open({template: '<div>Content</div>'});
+      expect($rootScope.$broadcast).toHaveBeenCalledWith('modalOpen');
+      
+      dismiss(modal, 'closing in test');
+      expect($rootScope.$broadcast).toHaveBeenCalledWith('modalDismiss');
+      
+      modal = open({template: '<div>Content</div>'});
+      close(modal, 'closed ok');
+      expect($rootScope.$broadcast).toHaveBeenCalledWith('modalClose');
+    });
 
   });
 
